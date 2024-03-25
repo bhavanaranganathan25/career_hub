@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.exception.DatabaseConnectionException;
 import com.model.Applicant;
 import com.model.JobListing;
 import com.util.DBUtility;
@@ -15,25 +16,21 @@ import com.util.DBUtility;
 public class JobListingDaoImpl {
 
 
-	public void apply(int id, String coverLetter) throws SQLException {
-		Connection conn=DBUtility.getDBConn();
-		String sql="select id, cover_letter from jobapllication";
+	public void apply(int id, String coverLetter) throws SQLException, DatabaseConnectionException {
+		Connection conn=DBUtility.getDbConn();
+		String sql="insert into jobapllication(id,cover_letter) values (?,?)";
 		PreparedStatement ps=conn.prepareStatement(sql);
 		ps.setInt(1, id);
+		ps.setString(2, coverLetter);
+		int rst=ps.executeUpdate();
 		
-		ResultSet rst=ps.executeQuery();
-		if(rst.next()) {
-			int jid=rst.getInt("id");
-			String coverletter=rst.getString("cover_letter");
-			
-		}
-		DBUtility.dbClose();
+		DBUtility.DBClose();
 		
 	}
 
-	public List<Applicant> getApplicant() throws SQLException {
+	public List<Applicant> getApplicant() throws SQLException, DatabaseConnectionException {
 		List<Applicant> list=new ArrayList<>();
-		Connection conn=DBUtility.getDBConn();
+		Connection conn=DBUtility.getDbConn();
 		String sql="select*from applicant";
 		PreparedStatement ps=conn.prepareStatement(sql);
 		 
@@ -49,13 +46,13 @@ public class JobListingDaoImpl {
 		    Applicant applicant=new Applicant(applicantId,firstName,lastName,email,phone,resume);
 		    list.add(applicant);
 		}
-		DBUtility.dbClose();
+		DBUtility.DBClose();
 		return list;
 	}
 
-	public List<JobListing> getJobListings() throws SQLException {
+	public List<JobListing> getJobListings() throws SQLException, DatabaseConnectionException {
 		List<JobListing> list = new ArrayList<>();
-		Connection conn=DBUtility.getDBConn();
+		Connection conn=DBUtility.getDbConn();
 		String sql="select * from joblisting";
 		PreparedStatement ps=conn.prepareStatement(sql);
 		
@@ -72,13 +69,13 @@ public class JobListingDaoImpl {
 		    JobListing jl=new JobListing(id, cid,description,location,jobType, salary,jobType, postdate);
 		    list.add(jl);
 		}
-		DBUtility.dbClose();
+		DBUtility.DBClose();
 		return list;
 	}
 
-	public List<JobListing> getJobListingsBySalaryRange(double minSalary, double maxSalary) throws SQLException {
+	public List<JobListing> getJobListingsBySalaryRange(double minSalary, double maxSalary) throws SQLException, DatabaseConnectionException {
 		List<JobListing> jobListings = new ArrayList<>();
-        Connection conn = DBUtility.getDBConn();
+        Connection conn = DBUtility.getDbConn();
         String sql = "SELECT * FROM joblisting WHERE salary BETWEEN ? AND ?";
         PreparedStatement ps = conn.prepareStatement(sql);
             ps.setDouble(1, minSalary);
@@ -90,7 +87,7 @@ public class JobListingDaoImpl {
                 
                 jobListings.add(job);
             }
-        DBUtility.dbClose();
+        DBUtility.DBClose();
         return jobListings;
 	}
 

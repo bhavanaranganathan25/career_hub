@@ -4,12 +4,14 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+import com.exception.DatabaseConnectionException;
+import com.exception.FileUploadException;
 import com.exception.InvalidEmailFormatting;
 import com.model.Applicant;
 import com.service.*;
 
 public class ApplicantController {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws DatabaseConnectionException {
 		ApplicantService as=new ApplicantService();
 		Scanner sc=new Scanner(System.in);
 		while (true) {
@@ -39,10 +41,13 @@ public class ApplicantController {
 				as.validateEmail(email);
 				System.out.println("Enter the phone");
 				String phone=sc.nextLine();
+				System.out.println("Upload resume");
+				String resume=sc.next();
+				as.validateResume(resume);
 				
 			
 					as.createProfile(firstName,lastName,email,phone);
-				} catch (SQLException | InvalidEmailFormatting e) {
+				} catch (SQLException | InvalidEmailFormatting | FileUploadException e) {
 					// TODO Auto-generated catch block
 					System.out.println(e.getMessage());;
 				}

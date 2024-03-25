@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.*;
 import java.util.*;
 
+import com.exception.DatabaseConnectionException;
 import com.model.Applicant;
 import com.model.Company;
 import com.model.JobListing;
@@ -14,8 +15,8 @@ import com.util.DBUtility;
 
 public class CompanyDaoImpl {
 
-	public void postJob(String des, String loc, double salary, String type) throws SQLException {
-		Connection conn=DBUtility.getDBConn();
+	public void postJob(String des, String loc, double salary, String type) throws SQLException, DatabaseConnectionException {
+		Connection conn=DBUtility.getDbConn();
 		String sql="insert into(company_id,job_title,job_description,job_location,salary,job_type,posted_date)values(?,?,?,?,?,?,?";
 		PreparedStatement ps=conn.prepareStatement(sql);
 		ps.setString(1, loc);
@@ -31,13 +32,13 @@ public class CompanyDaoImpl {
 			LocalDate postdate=rst.getDate("posted_date").toLocalDate();
 			
 		}
-		DBUtility.dbClose();
+		DBUtility.DBClose();
 		
 	}
 
-	public List<JobListing> getJobs() throws SQLException {
+	public List<JobListing> getJobs() throws SQLException, DatabaseConnectionException {
 		List<JobListing> list = new ArrayList<>();
-		Connection conn=DBUtility.getDBConn();
+		Connection conn=DBUtility.getDbConn();
 		String sql="select * from joblisting";
 		PreparedStatement ps=conn.prepareStatement(sql);
 		
@@ -54,13 +55,13 @@ public class CompanyDaoImpl {
 		    JobListing jl=new JobListing(id, cid,description,location,jobType, salary,jobType, postdate);
 		    list.add(jl);
 		}
-		DBUtility.dbClose();
+		DBUtility.DBClose();
 		return list;
 	}
 
-	public List<Company> getCompany() throws SQLException {
+	public List<Company> getCompany() throws SQLException, DatabaseConnectionException {
 		List<Company> list = new ArrayList<>();
-		Connection conn=DBUtility.getDBConn();
+		Connection conn=DBUtility.getDbConn();
 		String sql="select * from customer";
 		PreparedStatement ps=conn.prepareStatement(sql);
 		
@@ -72,7 +73,7 @@ public class CompanyDaoImpl {
 		    Company c=new Company();
 		    list.add(c);
 		}
-		DBUtility.dbClose();
+		DBUtility.DBClose();
 		return list;
 	}
 }

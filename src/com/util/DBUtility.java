@@ -1,43 +1,44 @@
 package com.util;
 
-import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBUtility {
-private static Connection conn;
-	
-	public static Connection getDBConn() {
-	 String usernameDb="root";
-	 String passwordDb="";
-	 String urlDb="jdbc:mysql://localhost:3306/careerhub";
-	 String driverName="com.mysql.jdbc.Driver"; 
+import com.exception.DatabaseConnectionException;
+import java.sql.Connection;
 
+public class DBUtility {
+	private static Connection conn;
+	
+	public static Connection getDbConn() throws DatabaseConnectionException
+	{
+		String usernameDb="root";
+		String passwordDb="";
+		String urlDb="jdbc:mysql://localhost:3306/careerdb";
+		String driverName="com.mysql.jdbc.Driver";
+		
 		try {
 			Class.forName(driverName);
-			
 		} catch (ClassNotFoundException e) {
-			System.out.println("Driver could not be loaded");
-			e.printStackTrace();
-		} 
-		
-		
-		try {
-			conn = DriverManager.getConnection(urlDb, usernameDb, passwordDb);
-		} catch (SQLException e) {
-			System.out.println("Connection could not be established");
-			e.printStackTrace();
+			throw new DatabaseConnectionException("Unable to load the Database Driver :(");
 		}
 		
-		return conn; 
+		try {
+			conn=DriverManager.getConnection(urlDb,usernameDb,passwordDb);
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to establish a connection to the database :(");
+		}
+		
+		return conn;
 	}
 	
-	public static void dbClose() {
+	public static void  DBClose()
+	{
 		try {
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
 }
+

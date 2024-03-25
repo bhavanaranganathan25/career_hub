@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.exception.DatabaseConnectionException;
 import com.model.*;
 import com.service.JobListingService;
 
@@ -31,7 +32,7 @@ public class JobListingController {
 				
 				try {
 					joblist.apply(id,coverLetter);
-				} catch (SQLException e) {
+				} catch (SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -43,7 +44,7 @@ public class JobListingController {
 					for(Applicant a:list) {
 						System.out.println(a);
 					}
-				}catch(SQLException e) {
+				}catch(SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -57,7 +58,7 @@ public class JobListingController {
 					for(JobListing a:list) {
 						System.out.println(a);
 					}
-				}catch(SQLException e) {
+				}catch(SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -72,7 +73,7 @@ public class JobListingController {
 		            
 		            for (JobListing job : jobListings) {
 		                System.out.println(job);		            }
-		        } catch (SQLException e) {
+		        } catch (SQLException | DatabaseConnectionException e) {
 		            System.out.println("An error occurred while retrieving job listings: " + e.getMessage());
 		        }
 		        

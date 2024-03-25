@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.model.Applicant;
+import com.exception.DatabaseConnectionException;
 import com.model.*;
 import com.service.*;
 
@@ -37,7 +38,7 @@ public class CompanyController {
 			
 			try {
 				companylist.postJob(des,loc,salary,type);
-			} catch (SQLException e) {
+			} catch (SQLException | DatabaseConnectionException e) {
 				e.printStackTrace();
 			}
 			break;
@@ -51,7 +52,7 @@ public class CompanyController {
 				System.out.println(a);
 			}
 		}
-			catch (SQLException e) {
+			catch (SQLException | DatabaseConnectionException e) {
 				
 				System.out.println(e.getMessage());
 			}
@@ -64,7 +65,7 @@ public class CompanyController {
 				for(Company a:list1) {
 					System.out.println(a);
 				}
-			}catch(SQLException e) {
+			}catch(SQLException | DatabaseConnectionException e) {
 				System.out.println(e.getMessage());
 			}
 			break;

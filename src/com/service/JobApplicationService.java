@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.model.JobApplication;
 import com.dao.*;
+import com.exception.DatabaseConnectionException;
 public class JobApplicationService {
 	 ApplicationDaoImpl impl=new  ApplicationDaoImpl ();
 
@@ -22,7 +23,7 @@ public class JobApplicationService {
 
 }
 
-	public void applyForJob(int applicantId, int jobId, String coverLetter) throws SQLException {
+	public void applyForJob(int applicantId, int jobId, String coverLetter) throws SQLException, DatabaseConnectionException {
 		impl.insertJobApplication(applicantId, jobId, coverLetter);
 	    
 		
